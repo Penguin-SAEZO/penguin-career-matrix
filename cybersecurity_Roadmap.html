@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penguin Coder | Cybersecurity Roadmap</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+        :root {
+            /* Premium Dark Theme Variables */
+            --bg-color: #050505;
+            --text-main: #ffffff;
+            --text-muted: rgba(255, 255, 255, 0.6);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-highlight: rgba(255, 255, 255, 0.15);
+            --accent-gradient: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
+            --accent-glow: rgba(79, 172, 254, 0.4);
+            --completed-glass: rgba(79, 172, 254, 0.1);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', sans-serif;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* --- PRELOADER ANIMATION --- */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+        }
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-container {
+            position: relative;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .glow-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #4facfe;
+            border-right-color: #00f2fe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
+            animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+        }
+        .glow-ring.inner {
+            width: 65%;
+            height: 65%;
+            border-top-color: transparent;
+            border-right-color: transparent;
+            border-bottom-color: #00f2fe;
+            border-left-color: #4facfe;
+            animation: spin-reverse 2s linear infinite;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+        
+        /* --- OPTIMIZED AMBIENT ORBS --- */
+        .ambient-orb {
+            position: fixed;
+            z-index: -1;
+            will-change: transform; 
+            transform: translateZ(0); 
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 {
+            top: -20%; left: -20%;
+            width: 70vw; height: 70vw;
+            background: radial-gradient(circle, rgba(79, 172, 254, 0.15) 0%, rgba(5,5,5,0) 60%);
+        }
+        .orb-2 {
+            bottom: -30%; right: -20%;
+            width: 80vw; height: 80vw;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.15) 0%, rgba(5,5,5,0) 60%);
+            animation-delay: -5s;
+        }
+        @keyframes float {
+            0% { transform: translate3d(0, 0, 0) scale(1); }
+            100% { transform: translate3d(50px, 50px, 0) scale(1.1); }
+        }
+        /* --- LIQUID GLASS PANELS --- */
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            transition: border-color 0.3s ease, transform 0.3s ease;
+        }
+        /* --- NAVBAR --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5vw;
+            background: rgba(5, 5, 5, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .brand {
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 1.5px;
+            background: linear-gradient(to right, #fff, #aaa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        /* --- MAIN CONTENT & HEADER --- */
+        .container {
+            max-width: 900px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+        .header-section {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        .header-section h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--accent-glow);
+        }
+        .header-section p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        /* --- PROGRESS CARD --- */
+        .progress-card {
+            padding: 30px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        .progress-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+        .percent {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+            overflow: hidden;
+            position: relative;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--accent-gradient);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .stats {
+            display: flex;
+            gap: 20px;
+        }
+        .stat-box {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s;
+        }
+        .stat-box.active {
+            background: var(--completed-glass);
+            border-color: rgba(79, 172, 254, 0.3);
+            box-shadow: inset 0 0 20px rgba(79, 172, 254, 0.1);
+        }
+        .stat-number { font-size: 1.8rem; font-weight: 600; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+        
+        /* --- TIMELINE & ROADMAP --- */
+        .roadmap {
+            position: relative;
+        }
+        .roadmap::before {
+            content: '';
+            position: absolute;
+            top: 30px;
+            bottom: 30px;
+            left: 24px;
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--glass-highlight), transparent);
+            z-index: 0;
+        }
+        .step {
+            display: flex;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        .step-number {
+            width: 50px;
+            height: 50px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-highlight);
+            color: var(--text-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-right: 30px;
+            flex-shrink: 0;
+            box-shadow: 0 0 15px rgba(0,0,0,0.5);
+            transition: all 0.3s;
+        }
+        .step-content {
+            flex: 1;
+            overflow: hidden;
+        }
+        .step-content:hover {
+            border-color: var(--glass-highlight);
+            transform: translateY(-2px);
+        }
+        .step-header {
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+        .step-title { 
+             font-weight: 500; 
+             font-size: 1.2rem; 
+             letter-spacing: 0.5px;
+        }
+        .step-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.2);
+            padding: 6px 12px;
+            border-radius: 30px;
+        }
+        .step-body {
+            display: none;
+            padding: 0 25px 25px 25px;
+        }
+        .step-body.active { display: block; }
+        
+        /* --- CHECKBOXES --- */
+        .task {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .task:hover {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-main);
+        }
+        .task input[type="checkbox"] {
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            background-color: transparent;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        .task input[type="checkbox"]:checked {
+            background: var(--accent-gradient);
+            border-color: transparent;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .task input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: black;
+            font-size: 12px;
+            font-weight: 700;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .task-text { transition: all 0.3s; font-weight: 300;}
+        .task input[type="checkbox"]:checked ~ .task-text {
+            color: rgba(255,255,255,0.3);
+            text-decoration: line-through;
+        }
+        .arrow { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .arrow.open { transform: rotate(180deg); stroke: #4facfe; }
+        
+        /* --- CUSTOM FOOTER --- */
+        .glass-footer {
+            margin-top: 80px;
+            padding: 40px 20px 20px;
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-top: 1px solid var(--glass-border);
+            text-align: center;
+        }
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .footer-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .footer-links {
+            display: flex;
+            gap: 25px;
+        }
+        .footer-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: var(--text-main);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+        .footer-bottom {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 20px;
+        }
+        @media (max-width: 768px) {
+            .header-section h1 { font-size: 2.5rem; }
+            .stats { flex-direction: column; }
+            .roadmap::before { left: 19px; }
+            .step-number { width: 40px; height: 40px; font-size: 1rem; margin-right: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div id="preloader">
+        <div class="loader-container">
+            <div class="glow-ring"></div>
+            <div class="glow-ring inner"></div>
+        </div>
+    </div>
+    
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+    
+    <nav>
+        <div class="brand">PENGUIN // CODER</div>
+    </nav>
+    
+    <div class="container">
+        <div class="header-section">
+            <h1>Master Cybersecurity.</h1>
+            <p>From foundational core networking to expert security engineering. Track your journey below.</p>
+        </div>
+        
+        <div class="progress-card glass-panel">
+            <div class="progress-header">
+                <div class="progress-title">Journey Status</div>
+                <div class="percent" id="percent-text">0%</div>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar-fill" id="progress-bar-fill"></div>
+            </div>
+            <div class="stats">
+                <div class="stat-box active" id="completed-box">
+                    <div class="stat-number" id="completed">0</div>
+                    <div class="stat-label">Modules Cleared</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="remaining">0</div>
+                    <div class="stat-label">Remaining</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number" id="total">0</div>
+                    <div class="stat-label">Total Modules</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="roadmap" id="roadmap-container"></div>
+    </div>
+    
+    <footer class="glass-footer">
+        <div class="footer-content">
+            <div class="footer-brand">PENGUIN // CODER</div>
+            <div class="footer-links">
+                <a href="#">YouTube</a>
+                <a href="#">GitHub</a>
+                <a href="#">Discord</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Penguin Coder. Built with ☕ and Security.
+        </div>
+    </footer>
+    
+    <script>
+        // --- Preloader Logic ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 800); 
+        });
+
+        // --- Structured Cybersecurity Master Data ---
+        const roadmapData = [
+            {
+                title: "1. Computer Science & IT Foundations",
+                tasks: [
+                    "Operating System Architecture (Linux Systems & Windows Internals)",
+                    "Command Line Environments (Advanced Bash Scripting & PowerShell Basics)",
+                    "Hypervisor Deployment (VirtualBox/VMware Setup with Kali & Ubuntu nodes)",
+                    "Computer Architecture & Basic File Formats (PE, ELF, Binary structures)"
+                ]
+            },
+            {
+                title: "2. Network Protocol Analysis",
+                tasks: [
+                    "The OSI Model & Deep TCP/IP Protocol Stack Internals",
+                    "Core Infrastructure Operations (DNS Routing, DHCP Pools, ARP Resolutions)",
+                    "Network Traffic Inspection & Profiling (Using complex Wireshark Capture Filters)",
+                    "Network Mapping & Active Port Analysis (Nmap Syntax & Scanning profiles)"
+                ]
+            },
+            {
+                title: "3. Fundamental Cryptography Systems",
+                tasks: [
+                    "Symmetric vs Asymmetric Key Infrastructures (AES, RSA Algorithms)",
+                    "Hashing Metrics and Data Integrity Assurance (MD5, SHA-256 validation)",
+                    "Public Key Infrastructure (PKI Lifecycle, SSL/TLS Handshake Handlers)",
+                    "Data Protection Implementations (Identity/Access Management & AAA Systems)"
+                ]
+            },
+            {
+                title: "4. Web Application Security (OWASP Top 10)",
+                tasks: [
+                    "HTTP Request/Response Manipulation via Interception Proxies (Burp Suite Basics)",
+                    "Injection Vulnerabilities Identification (SQL Injection, OS Command Injections)",
+                    "Client-Side Attack Frameworks (Cross-Site Scripting [XSS] & CSRF Vectors)",
+                    "Logical Flaw Identification (Broken Session Authentication & IDOR Analysis)"
+                ]
+            },
+            {
+                title: "5. Penetration Testing & Vulnerability Research",
+                tasks: [
+                    "Information Gathering & Target Reconnaissance (Subdomain Mining, OSINT Tracking)",
+                    "Automated Assessment Platforms Management (Nessus Framework Auditing)",
+                    "Exploit Discovery & Payload Execution Configurations (Metasploit Framework Modules)",
+                    "Vulnerability Disclosure Systems Metrics (CVSS Scoring & Technical Report Architecture)"
+                ]
+            },
+            {
+                title: "6. Security Operations & Incident Defense (Blue Teaming)",
+                tasks: [
+                    "Event Log Log-Aggregators and SIEM Operations (Analyzing Traffic Signatures)",
+                    "Threat Mitigation & Perimeter Defense Optimization (Firewalls, Rulesets, IDS/IPS)",
+                    "Static Endpoint Analysis Protocols (Hashing Profiles, Strings Extraction, PE Headers)",
+                    "Incident Response Framework Procedures (Containment Strategies & Forensics Collection)"
+                ]
+            },
+            {
+                title: "7. Cloud Architecture & Enterprise DevSecOps",
+                tasks: [
+                    "Cloud Infrastructure Shared Responsibility Controls (AWS/Azure Core Audits)",
+                    "Automated Vulnerability Code Scanners Pipeline Merges (SAST & DAST tools)",
+                    "Isolated Container Security Auditing (Docker Engines & Kubernetes Configurations)",
+                    "Enterprise Compliance Management Architectures (ISO 27001 / NIST Implementation)"
+                ]
+            }
+        ];
+
+        const container = document.getElementById('roadmap-container');
+
+        // --- Generate HTML for Roadmap ---
+        roadmapData.forEach((section, index) => {
+            const stepNum = index + 1;
+            const taskHTML = section.tasks.map(task => `
+                <label class="task">
+                    <input type="checkbox" class="task-checkbox" data-section="${stepNum}">
+                    <span class="task-text">${task}</span>
+                </label>
+            `).join('');
+
+            const sectionHTML = `
+                <div class="step">
+                    <div class="step-number" id="step-circle-${stepNum}">${stepNum}</div>
+                    <div class="step-content glass-panel">
+                        <div class="step-header" onclick="toggleSection(this)">
+                            <div class="step-title">${section.title}</div>
+                            <div class="step-meta">
+                                <span class="fraction" id="fraction-${stepNum}">0/${section.tasks.length}</span>
+                                <svg class="arrow" width="14" height="8" viewBox="0 0 12 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="step-body ${index === 0 ? 'active' : ''}">
+                            ${taskHTML}
+                        </div>
+                    </div>
+                </div>
+            `;
+            container.innerHTML += sectionHTML;
+        });
+
+        // --- Progress Tracking Logic ---
+        const checkboxes = document.querySelectorAll('.task-checkbox');
+        const totalTasks = checkboxes.length;
+        document.getElementById('total').innerText = totalTasks;
+
+        function updateProgress() {
+            const checkedBoxes = document.querySelectorAll('.task-checkbox:checked');
+            const completed = checkedBoxes.length;
+            const remaining = totalTasks - completed;
+            const percent = totalTasks === 0 ? 0 : Math.round((completed / totalTasks) * 100);
+
+            document.getElementById('completed').innerText = completed;
+            document.getElementById('remaining').innerText = remaining;
+            document.getElementById('percent-text').innerText = percent + '%';
+            document.getElementById('progress-bar-fill').style.width = percent + '%';
+
+            roadmapData.forEach((section, index) => {
+                const sectionNum = index + 1;
+                const sectionTotal = section.tasks.length;
+                const sectionCompleted = document.querySelectorAll(`.task-checkbox[data-section="${sectionNum}"]:checked`).length;
+                
+                document.getElementById(`fraction-${sectionNum}`).innerText = `${sectionCompleted}/${sectionTotal}`;
+                
+                const circle = document.getElementById(`step-circle-${sectionNum}`);
+                if(sectionCompleted === sectionTotal) {
+                    circle.style.background = 'var(--accent-gradient)';
+                    circle.style.color = '#000';
+                    circle.style.borderColor = 'transparent';
+                    circle.style.boxShadow = '0 0 15px var(--accent-glow)';
+                } else {
+                    circle.style.background = 'var(--glass-bg)';
+                    circle.style.color = 'var(--text-main)';
+                    circle.style.borderColor = 'var(--glass-highlight)';
+                    circle.style.boxShadow = '0 0 15px rgba(0,0,0,0.5)';
+                }
+            });
+        }
+
+        checkboxes.forEach(cb => {
+            cb.addEventListener('change', updateProgress);
+        });
+
+        function toggleSection(element) {
+            const body = element.nextElementSibling;
+            const arrow = element.querySelector('.arrow');
+            
+            if (body.classList.contains('active')) {
+                body.classList.remove('active');
+                arrow.classList.remove('open');
+            } else {
+                body.classList.add('active');
+                arrow.classList.add('open');
+            }
+        }
+
+        updateProgress();
+        document.querySelector('.arrow').classList.add('open');
+    </script>
+</body>
+</html>
